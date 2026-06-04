@@ -5,7 +5,7 @@ import { useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export default function MediaVideosPage() {
-  const [activeVideo, setActiveVideo] = useState(null);
+const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
   const videos = [
     "/video.mp4",
