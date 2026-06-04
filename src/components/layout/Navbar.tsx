@@ -20,13 +20,15 @@ export default function Navbar() {
   const params = useParams();
   const pathname = usePathname();
 
-  // FIXED LOCALE
-  const locale =
-    typeof params.locale === "string"
-      ? params.locale
-      : "en";
+  // Use locale only when provided in the route. Do not force a default locale here.
+  const locale = typeof params.locale === "string" ? params.locale : undefined;
+  const prefix = locale ? `/${locale}` : "";
 
-  const prefix = `/${locale}`;
+  // Builds an absolute href that always starts with `/` and includes the locale prefix when present.
+  const makeHref = (path: string) => {
+    const p = path.startsWith("/") ? path : `/${path}`;
+    return prefix ? `${prefix}${p}` : p;
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -115,10 +117,10 @@ export default function Navbar() {
               (sub: any, idx: number) => (
                 <li key={idx}>
 
-                  <Link
-                    href={`${prefix}${sub.href}`}
-                    className="block px-4 py-3 rounded-xl text-white hover:bg-[#e0bc80] hover:text-black transition"
-                  >
+                    <Link
+                      href={makeHref(sub.href)}
+                      className="block px-4 py-3 rounded-xl text-white hover:bg-[#e0bc80] hover:text-black transition"
+                    >
                     {sub.name}
                   </Link>
 
@@ -131,11 +133,8 @@ export default function Navbar() {
       );
     }
 
-    // NORMAL LINKS
-    const fullHref =
-      item.href === "/"
-        ? prefix
-        : `${prefix}${item.href}`;
+    // NORMAL LINKS - always use absolute hrefs
+    const fullHref = item.href === "/" ? makeHref("/") : makeHref(item.href);
 
     const normalizedPathname =
       pathname?.replace(/\/$/, "") ?? "";
@@ -199,7 +198,7 @@ export default function Navbar() {
 
           {/* LOGO */}
           <Link
-            href={prefix}
+            href={makeHref("/")}
             className="shrink-0 relative z-10"
           >
             <Image
@@ -346,10 +345,8 @@ export default function Navbar() {
                         (sub: any, idx: number) => (
                           <Link
                             key={idx}
-                            href={`${prefix}${sub.href}`}
-                            onClick={() =>
-                              setMobileMenu(false)
-                            }
+                            href={makeHref(sub.href)}
+                            onClick={() => setMobileMenu(false)}
                             className="text-gray-300 hover:text-[#e0bc80] transition"
                           >
                             {sub.name}
@@ -365,11 +362,8 @@ export default function Navbar() {
               );
             }
 
-            // NORMAL LINKS
-            const fullHref =
-              item.href === "/"
-                ? prefix
-                : `${prefix}${item.href}`;
+            // NORMAL LINKS - always produce absolute href
+            const fullHref = item.href === "/" ? makeHref("/") : makeHref(item.href);
 
             return (
               <Link

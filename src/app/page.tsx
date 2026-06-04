@@ -6,6 +6,7 @@ import SundusSection from "@/components/home/SundusSection";
 import BlogSection from "@/components/home/BlogSection";
  
 export default function Home() {
+  
   return (
     <>
       <Hero/>

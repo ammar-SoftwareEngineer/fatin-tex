@@ -14,6 +14,12 @@ export default function Breadcrumb({
   const { locale } = useParams();
   const prefix = locale ? `/${locale}` : "";
 
+  const makeHref = (path?: string) => {
+    if (!path) return undefined;
+    const p = path.startsWith("/") ? path : `/${path}`;
+    return prefix ? `${prefix}${p}` : p;
+  };
+
   return (
     <section className="relative overflow-hidden pt-50 pb-20 px-6 md:px-16">
 
@@ -72,7 +78,7 @@ export default function Breadcrumb({
 
           {/* Home */}
           <Link
-            href={prefix || "/"}
+            href={makeHref("/")}
             className="flex items-center gap-2 text-gray-200 hover:text-[#e0bc80] transition"
           >
             <HiHome className="text-lg" />
@@ -81,9 +87,7 @@ export default function Breadcrumb({
 
           {/* Dynamic Items */}
           {items.map((item, i) => {
-            const href = item.href
-              ? `${prefix}${item.href}`
-              : undefined;
+            const href = item.href ? makeHref(item.href) : undefined;
 
             return (
               <div
