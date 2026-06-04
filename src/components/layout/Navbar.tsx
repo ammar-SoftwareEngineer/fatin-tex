@@ -44,11 +44,12 @@ export default function Navbar() {
         { name: "Linen Fabric", href: "/products/linen" },
       ],
     },
+        { name: "Media", href: "/media" },
   ];
 
   const rightLinks = [
     { name: "Sondos Dyeing", href: "/sondos-dyeing" },
-    { name: "Media", href: "/media" },
+
     { name: "Blogs", href: "/blogs" },
     { name: "Contact", href: "/contact" },
   ];
