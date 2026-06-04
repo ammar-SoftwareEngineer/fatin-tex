@@ -2,6 +2,8 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 export default function BlogSection() {
   const blogs = [
@@ -25,15 +27,18 @@ export default function BlogSection() {
     },
   ];
 
-  return (
-    <section className="relative py-28 px-6 md:px-16 bg-(--background) text-white overflow-hidden">
+  const { locale } = useParams() as { locale?: string };
+  const prefix = locale ? `/${locale}` : "";
 
+  return (
+    <section className="relative py-28 px-6 md:px-16 bg-[var(--background)] text-white overflow-hidden">
 
       {/* Header */}
       <div className="text-center mb-16">
         <p className="text-[#e0bc80] tracking-[5px] text-xs mb-3">
           OUR BLOG
         </p>
+
         <h2 className="text-4xl md:text-5xl font-bold">
           Latest Articles
         </h2>
@@ -58,6 +63,7 @@ export default function BlogSection() {
               <img
                 src={blog.img}
                 className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                alt={blog.title}
               />
             </div>
 
@@ -77,16 +83,36 @@ export default function BlogSection() {
               </p>
 
               {/* Read More */}
-              <button className="mt-5 text-sm text-[#e0bc80] relative">
+              <Link
+                href={`${prefix}/blogs/${blog.title.toLowerCase().replace(/\s+/g, "-")}`}
+                className="mt-5 inline-block text-sm text-[#e0bc80] relative"
+              >
                 Read More
                 <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-[#e0bc80] group-hover:w-full transition-all duration-300"></span>
-              </button>
+              </Link>
 
             </div>
           </motion.div>
         ))}
 
       </div>
+
+      {/* زرار البلوجز */}
+      <div className="flex justify-center">
+        <Link href={`${prefix}/blogs`}>
+          <motion.button
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0px 0px 25px rgba(224,188,128,0.4)",
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-[#e0bc80] text-black px-7 py-3 rounded-full font-medium transition flex items-center gap-2 mt-12"
+          >
+            View All Blogs
+          </motion.button>
+        </Link>
+      </div>
+
     </section>
   );
 }

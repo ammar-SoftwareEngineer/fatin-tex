@@ -1,16 +1,20 @@
 "use client";
 
+import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+
 import Breadcrumb from "@/components/Breadcrumb";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 
+import "swiper/css";
+
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
-
-import { useState } from "react";
 
 export default function ProductDetails() {
   const [open, setOpen] = useState(false);
@@ -22,10 +26,10 @@ export default function ProductDetails() {
     category: "Cotton",
 
     description:
-      "Premium luxury cotton fabric with soft texture and elegant finishing.",
+      "Premium luxury cotton fabric crafted with precision to deliver an ultra-soft touch, breathable texture, and refined finishing. Perfect for high-end fashion, upholstery, and interior design projects that demand elegance and durability at the same time.",
 
     longDescription:
-      "Designed for premium fashion and interior brands with durability, softness, and luxury finishing.",
+      "This fabric is engineered for premium brands and designers who value both aesthetics and performance. It is woven from high-grade cotton fibers that ensure long-lasting durability while maintaining a smooth, comfortable feel against the skin. The material undergoes a special finishing process to enhance its softness, reduce shrinkage, and preserve color richness over time. Whether used in couture fashion pieces, luxury home textiles, or bespoke design projects, this cotton fabric brings a timeless and sophisticated look that elevates any creation. Its breathable nature makes it ideal for all-season use, while its strong structure guarantees resistance to wear and repeated washing.",
 
     sliderImages: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
 
@@ -34,10 +38,12 @@ export default function ProductDetails() {
     reels: ["/video.mp4", "/video.mp4", "/video.mp4"],
   };
 
+  const { locale } = useParams() as { locale?: string };
+  const prefix = locale ? `/${locale}` : "";
+
   return (
     <section className="bg-[#0f0f0f] text-white pb-28">
 
-      {/* Breadcrumb */}
       <div className="bg-black">
         <Breadcrumb
           items={[
@@ -47,95 +53,91 @@ export default function ProductDetails() {
         />
       </div>
 
-      {/* TOP LAYOUT */}
-      <div className="max-w-7xl mx-auto px-6 mt-16 grid lg:grid-cols-2 gap-14 items-start">
+      <div className="max-w-5xl mx-auto px-6 mt-16">
 
-        {/* LEFT SIDE */}
-        <div>
 
-          {/* SLIDER */}
+        {/* SLIDER (taller) */}
+        <div className="rounded-[35px] overflow-hidden shadow-2xl">
           <Swiper
             modules={[Autoplay]}
-            autoplay={{ delay: 3000 }}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
             loop
-            className="rounded-[30px] overflow-hidden shadow-2xl"
           >
             {product.sliderImages.map((img, i) => (
               <SwiperSlide key={i}>
                 <Image
                   src={img}
                   alt=""
-                  width={900}
-                  height={900}
-                  className="w-full h-[520px] object-cover"
+                  width={1000}
+                  height={1000}
+                  className="w-full h-[800px] object-cover"
                 />
               </SwiperSlide>
             ))}
           </Swiper>
-
-          {/* THUMB GALLERY */}
-          <div className="grid grid-cols-3 gap-4 mt-5">
-
-            {product.gallery.map((img, i) => (
-              <div
-                key={i}
-                onClick={() => {
-                  setIndex(i);
-                  setOpen(true);
-                }}
-                className="cursor-pointer overflow-hidden rounded-xl"
-              >
-                <Image
-                  src={img}
-                  alt=""
-                  width={300}
-                  height={300}
-                  className="h-[130px] w-full object-cover hover:scale-110 transition duration-500"
-                />
-              </div>
-            ))}
-
-          </div>
-
         </div>
 
-        {/* RIGHT SIDE */}
-        <div className="lg:sticky lg:top-24">
+        {/* SHORT DESCRIPTION (bigger + spaced) */}
+        <p className="text-gray-300 text-lg leading-9 mt-12 text-center max-w-3xl mx-auto">
+          {product.description}
+        </p>
 
-          <span className="text-[#e0bc80] tracking-[5px] uppercase text-xs">
-            {product.category}
-          </span>
+        {/* GALLERY (bigger thumbnails) */}
+        <div className="grid grid-cols-3 gap-5 mt-14">
+          {product.gallery.map((img, i) => (
+            <div
+              key={i}
+              onClick={() => {
+                setIndex(i);
+                setOpen(true);
+              }}
+              className="cursor-pointer overflow-hidden rounded-2xl"
+            >
+              <Image
+                src={img}
+                alt=""
+                width={400}
+                height={400}
+                className="h-[300px] w-full object-cover hover:scale-110 transition duration-500"
+              />
+            </div>
+          ))}
+        </div>
 
-          <h1 className="text-5xl font-bold mt-4 mb-6 leading-tight">
-            {product.name}
-          </h1>
+        {/* LONG DESCRIPTION (bigger spacing + nicer layout) */}
+        <div className="mt-16 text-center">
+          <h2 className="text-3xl font-semibold mb-6 text-[#e0bc80]">
+            About This Fabric
+          </h2>
 
-          <p className="text-gray-300 text-lg leading-8 mb-6">
-            {product.description}
-          </p>
-
-          <div className="w-20 h-[2px] bg-[#e0bc80] mb-6"></div>
-
-          <p className="text-gray-400 leading-8">
+          <p className="text-gray-400 leading-9 max-w-4xl mx-auto text-lg">
             {product.longDescription}
           </p>
-
-          <div className="flex gap-4 mt-10">
-
-            <button className="px-7 py-4 bg-[#e0bc80] text-black rounded-xl font-semibold hover:scale-105 transition">
-              Request Order
-            </button>
-
-            <Link
-              href="/contact"
-              className="px-7 py-4 border border-white/20 rounded-xl hover:border-[#e0bc80] hover:text-[#e0bc80] transition"
-            >
-              Contact
-            </Link>
-
-          </div>
-
         </div>
+
+        {/* REELS */}
+        <div className="mt-24">
+          <h2 className="text-4xl font-bold text-center mb-12">
+            Product Reels
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-7">
+            {product.reels.map((video, i) => (
+              <div
+                key={i}
+                className="rounded-2xl overflow-hidden bg-black"
+              >
+                <video controls className="w-full h-[420px] object-cover">
+                  <source src={video} type="video/mp4" />
+                </video>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
 
       {/* LIGHTBOX */}
@@ -145,40 +147,6 @@ export default function ProductDetails() {
         index={index}
         slides={product.gallery.map((img) => ({ src: img }))}
       />
-
-      {/* REELS */}
-      <div className="max-w-7xl mx-auto px-6 mt-24">
-
-        <div className="mb-10">
-          <p className="text-[#e0bc80] uppercase tracking-[4px] text-xs mb-2">
-            Social Media
-          </p>
-
-          <h2 className="text-4xl font-bold">
-            Product Reels
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-
-          {product.reels.map((video, i) => (
-            <div
-              key={i}
-              className="rounded-2xl overflow-hidden bg-black"
-            >
-              <video
-                controls
-                className="w-full h-[400px] object-cover"
-              >
-                <source src={video} type="video/mp4" />
-              </video>
-            </div>
-          ))}
-
-        </div>
-
-      </div>
-
     </section>
   );
 }

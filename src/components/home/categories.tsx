@@ -4,14 +4,13 @@ import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 import "swiper/css";
 
 export default function Categories() {
-  const router = useRouter();
-
   const tabs = [
     {
       name: "Cotton",
@@ -46,6 +45,8 @@ export default function Categories() {
   ];
 
   const [activeTab, setActiveTab] = useState(0);
+  const { locale } = useParams();
+  const prefix = locale ? `/${locale}` : "";
 
   return (
     <section className="relative py-28 px-6 md:px-16 bg-[#0d0b09] text-white overflow-hidden">
@@ -55,6 +56,7 @@ export default function Categories() {
         <p className="text-[#e0bc80] tracking-[4px] text-xs mb-3">
           OUR COLLECTIONS
         </p>
+
         <h2 className="text-4xl md:text-5xl font-bold font-playfair">
           Fabric Categories
         </h2>
@@ -94,7 +96,7 @@ export default function Categories() {
                 delay: 2500,
                 disableOnInteraction: false,
               }}
-              loop={true}
+              loop
               spaceBetween={25}
               slidesPerView={1}
               breakpoints={{
@@ -104,54 +106,66 @@ export default function Categories() {
             >
               {tabs[activeTab].items.map((item, i) => (
                 <SwiperSlide key={i}>
-                  <div
-                    onClick={() =>
-                      router.push(`/products/${item.name.toLowerCase().replace(/\s/g, "-")}`)
-                    }
-                    className="relative h-[380px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl group cursor-pointer"
+                  <Link
+                    href={`${prefix}/products/${item.name
+                      .toLowerCase()
+                      .replace(/\s/g, "-")}`}
+                    className="block"
                   >
-                    {/* Image */}
-                    <img
-                      src={item.img}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700"
-                      alt=""
-                    />
+                    <div className="relative h-[380px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl group cursor-pointer">
 
-                    {/* Dark Overlay */}
-                    <div className="absolute inset-0 bg-black/30"></div>
+                      {/* Image */}
+                      <img
+                        src={item.img}
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                        alt=""
+                      />
 
-                    {/* Bottom Content */}
-                    <div className="absolute bottom-0 p-6 z-10">
-                      <h3 className="text-[#e0bc80] text-xl font-bold font-playfair">
-                        {item.name}
-                      </h3>
-                      <p className="text-gray-200 text-sm">
-                        {item.desc}
-                      </p>
+                      {/* Dark Overlay */}
+                      <div className="absolute inset-0 bg-black/30"></div>
+
+                      {/* Bottom Content */}
+                      <div className="absolute bottom-0 p-6 z-10">
+                        <h3 className="text-[#e0bc80] text-xl font-bold font-playfair">
+                          {item.name}
+                        </h3>
+                        <p className="text-gray-200 text-sm">
+                          {item.desc}
+                        </p>
+                      </div>
+
+                      {/* Arrow */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-300">
+                        <motion.div
+                          whileHover={{ scale: 1.1 }}
+                          className="absolute bottom-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-[#e0bc80] text-black shadow-lg"
+                        >
+                          <ArrowRight size={18} />
+                        </motion.div>
+                      </div>
+
                     </div>
-{/* Hover Arrow Bottom Right */}
-<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-300">
-
-  <motion.div
-    whileHover={{ scale: 1.1 }}
-    onClick={() =>
-      router.push(
-        `/products/${item.name.toLowerCase().replace(/\s/g, "-")}`
-      )
-    }
-    className="absolute bottom-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-[#e0bc80] text-black shadow-lg cursor-pointer"
-  >
-    <ArrowRight size={18} />
-  </motion.div>
-
-</div>
-                  </div>
+                  </Link>
                 </SwiperSlide>
               ))}
             </Swiper>
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* زرار المنتجات */}
+      <Link href={`${prefix}/products`}>
+        <motion.button
+          whileHover={{
+            scale: 1.05,
+            boxShadow: "0px 0px 25px rgba(224,188,128,0.4)",
+          }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-[#e0bc80] text-black px-7 py-3 rounded-full font-medium transition justify-center flex items-center gap-2 mt-12 mx-auto"
+        >
+          View All Products
+        </motion.button>
+      </Link>
 
       {/* Glow Effects */}
       <div className="absolute top-[-150px] left-[-150px] w-[450px] h-[450px] bg-[#e0bc80] blur-3xl rounded-full opacity-10"></div>
