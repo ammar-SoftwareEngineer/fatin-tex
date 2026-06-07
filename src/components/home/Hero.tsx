@@ -116,7 +116,7 @@ export default function Hero() {
   transition={{ delay: 0.4 }}
   className={activeIndex === index ? "pointer-events-auto" : "pointer-events-none"}
 >
-<Link href={localizePath(`/contact`, locale)}>
+<Link href={localizePath("/contact", locale)} className="inline-block relative z-50">
   <motion.div
     whileHover={{
       scale: 1.05,
@@ -130,8 +130,6 @@ export default function Hero() {
       text-black
       bg-gradient-to-r from-[#e0bc80] to-[#f5e6a8]
       transition-all duration-300
-      inline-block
-      cursor-pointer
     "
   >
     Explore More
