@@ -113,7 +113,7 @@ export default function SundusSection() {
               <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
 
                 <Link href={localizePath(`/sondos-dyeing`, locale)}>
-                  <motion.a
+                  <motion.div
                     whileHover={{
                       scale: 1.05,
                       boxShadow: "0px 0px 25px rgba(224,188,128,0.5)",
@@ -131,7 +131,7 @@ export default function SundusSection() {
                     "
                   >
                     Explore Collection
-                  </motion.a>
+                  </motion.div>
                 </Link>
 
                 <div className="

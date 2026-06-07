@@ -450,8 +450,8 @@ export default function AboutSection() {
 
             {/* BUTTON */}
             {/* Localized link to contact (Learn/Explore more) */}
-            <Link href={localizePath(`/contact`, locale)}>
-              <motion.a
+            <Link href={localizePath(`/about`, locale)}>
+              <motion.div
                 whileHover={{
                   scale: 1.06,
                   y: -3,
@@ -483,7 +483,7 @@ export default function AboutSection() {
                   transition={{ duration: 0.8 }}
                   className="absolute inset-0 bg-white/30 skew-x-12"
                 />
-              </motion.a>
+              </motion.div>
             </Link>
           </motion.div>
         </div>

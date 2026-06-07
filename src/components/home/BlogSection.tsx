@@ -354,7 +354,7 @@ export default function BlogSection() {
         "
       >
         <Link href={localizePath(`/blogs`, locale)}>
-          <motion.a
+          <motion.div
             whileHover={{
               scale: 1.05,
               y: -3,
@@ -400,7 +400,7 @@ export default function BlogSection() {
                 skew-x-12
               "
             ></motion.span>
-          </motion.a>
+          </motion.div>
         </Link>
       </motion.div>
     </section>

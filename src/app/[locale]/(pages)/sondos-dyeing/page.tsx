@@ -59,12 +59,12 @@ export default function SondosDyeingPage() {
           </motion.p>
 
           <Link href={localizePath(`/contact`, locale)}>
-            <motion.a
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="mt-8 px-6 py-3 rounded-full bg-[#e0bc80] text-black font-medium inline-block text-center"
             >
               Explore Our Process
-            </motion.a>
+            </motion.div>
           </Link>
 
         </div>

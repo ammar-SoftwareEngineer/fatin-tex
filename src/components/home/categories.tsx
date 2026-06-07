@@ -223,7 +223,7 @@ export default function Categories() {
       {/* VIEW ALL BUTTON */}
       <div className="flex justify-center mt-14 sm:mt-16">
                   <Link href={localizePath(`/products`, locale)}>
-                    <motion.a
+                    <motion.div
                       whileHover={{
                         scale: 1.05,
                         y: -3,
@@ -241,7 +241,7 @@ export default function Categories() {
                         transition={{ duration: 0.8 }}
                         className="absolute inset-0 bg-white/30 skew-x-12"
                       />
-                    </motion.a>
+                    </motion.div>
                   </Link>
       </div>
     </section>
