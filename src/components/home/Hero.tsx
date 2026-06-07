@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { localizePath } from "@/lib/utils";
 import { motion } from "framer-motion";
 import "swiper/css";
 import "swiper/css/effect-fade";
@@ -28,6 +30,8 @@ const slides = [
 
 export default function Hero() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const params = useParams();
+  const locale = typeof params.locale === "string" ? params.locale : undefined;
 
   return (
     <section className="relative w-full h-screen overflow-hidden">
@@ -112,7 +116,7 @@ export default function Hero() {
   transition={{ delay: 0.4 }}
   className={activeIndex === index ? "pointer-events-auto" : "pointer-events-none"}
 >
-<Link href="/contact">
+<Link href={localizePath(`/contact`, locale)}>
   <motion.div
     whileHover={{
       scale: 1.05,

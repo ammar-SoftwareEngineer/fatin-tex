@@ -2,9 +2,14 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { localizePath } from "@/lib/utils";
 import VideoSection from "@/components/home/VideoSection";
 
 export default function SondosDyeingPage() {
+  const params = useParams();
+  const locale = typeof params.locale === "string" ? params.locale : undefined;
   return (
     <div className="bg-(--background) text-white overflow-hidden">
 
@@ -53,12 +58,14 @@ export default function SondosDyeingPage() {
             and durability — crafted for global fashion houses and luxury brands.
           </motion.p>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            className="mt-8 px-6 py-3 rounded-full bg-[#e0bc80] text-black font-medium"
-          >
-            Explore Our Process
-          </motion.button>
+          <Link href={localizePath(`/contact`, locale)}>
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              className="mt-8 px-6 py-3 rounded-full bg-[#e0bc80] text-black font-medium inline-block text-center"
+            >
+              Explore Our Process
+            </motion.a>
+          </Link>
 
         </div>
       </section>

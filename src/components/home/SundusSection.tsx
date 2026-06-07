@@ -2,8 +2,14 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { localizePath } from "@/lib/utils";
 
 export default function SundusSection() {
+  const params = useParams();
+  const locale = typeof params.locale === "string" ? params.locale : undefined;
+
   return (
     <section className="relative min-h-screen bg-[#0d0b09] overflow-hidden">
 
@@ -106,24 +112,27 @@ export default function SundusSection() {
               {/* CTA */}
               <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
 
-                <motion.button
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: "0px 0px 25px rgba(224,188,128,0.5)",
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  className="
-                    bg-[#e0bc80]
-                    text-black
-                    px-5 sm:px-6
-                    py-2.5 sm:py-3
-                    rounded-full
-                    font-medium
-                    text-sm sm:text-base
-                  "
-                >
-                  Explore Collection
-                </motion.button>
+                <Link href={localizePath(`/sondos-dyeing`, locale)}>
+                  <motion.a
+                    whileHover={{
+                      scale: 1.05,
+                      boxShadow: "0px 0px 25px rgba(224,188,128,0.5)",
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    className="
+                      bg-[#e0bc80]
+                      text-black
+                      px-5 sm:px-6
+                      py-2.5 sm:py-3
+                      rounded-full
+                      font-medium
+                      text-sm sm:text-base
+                      inline-block text-center
+                    "
+                  >
+                    Explore Collection
+                  </motion.a>
+                </Link>
 
                 <div className="
                   w-9 h-9 sm:w-10 sm:h-10

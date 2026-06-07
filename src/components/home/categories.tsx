@@ -223,26 +223,26 @@ export default function Categories() {
       {/* VIEW ALL BUTTON */}
       <div className="flex justify-center mt-14 sm:mt-16">
                   <Link href={localizePath(`/products`, locale)}>
-          <motion.button
-            whileHover={{
-              scale: 1.05,
-              y: -3,
-              boxShadow: "0px 15px 40px rgba(224,188,128,0.35)",
-            }}
-            whileTap={{ scale: 0.95 }}
-            className="relative overflow-hidden bg-[#e0bc80] text-black px-10 py-4 rounded-full font-semibold shadow-xl"
-          >
-            View All Products
+                    <motion.a
+                      whileHover={{
+                        scale: 1.05,
+                        y: -3,
+                        boxShadow: "0px 15px 40px rgba(224,188,128,0.35)",
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                      className="relative overflow-hidden bg-[#e0bc80] text-black px-10 py-4 rounded-full font-semibold shadow-xl inline-block text-center"
+                    >
+                      View All Products
 
-            {/* SHINE EFFECT */}
-            <motion.span
-              initial={{ x: "-120%" }}
-              whileHover={{ x: "120%" }}
-              transition={{ duration: 0.8 }}
-              className="absolute inset-0 bg-white/30 skew-x-12"
-            />
-                  </motion.button>
-        </Link>
+                      {/* SHINE EFFECT */}
+                      <motion.span
+                        initial={{ x: "-120%" }}
+                        whileHover={{ x: "120%" }}
+                        transition={{ duration: 0.8 }}
+                        className="absolute inset-0 bg-white/30 skew-x-12"
+                      />
+                    </motion.a>
+                  </Link>
       </div>
     </section>
   );

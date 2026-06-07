@@ -3,6 +3,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Breadcrumb from "@/components/Breadcrumb";
+import Link from "next/link";
+import { localizePath } from "@/lib/utils";
 import { useParams } from "next/navigation";
 
 export default function AboutPage() {
@@ -179,9 +181,11 @@ export default function AboutPage() {
                   {item.desc}
                 </p>
 
-                <button className="mt-8 border border-[#e0bc80] text-[#e0bc80] px-6 py-3 rounded-full hover:bg-[#e0bc80] hover:text-black transition">
-                  Learn More
-                </button>
+                <Link href={localizePath(`/contact`, locale)} className="mt-8 inline-block">
+                  <div className="border border-[#e0bc80] text-[#e0bc80] px-6 py-3 rounded-full hover:bg-[#e0bc80] hover:text-black transition inline-block">
+                    Learn More
+                  </div>
+                </Link>
 
               </div>
 

@@ -2,6 +2,9 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { localizePath } from "@/lib/utils";
 
 export default function AboutSection() {
   const stats = [
@@ -11,6 +14,8 @@ export default function AboutSection() {
 
     { num: "100%", label: "Premium Quality" },
   ];
+  const params = useParams();
+  const locale = typeof params.locale === "string" ? params.locale : undefined;
 
   return (
     <section
@@ -444,51 +449,42 @@ export default function AboutSection() {
             </motion.div>
 
             {/* BUTTON */}
-            <motion.button
-              whileHover={{
-                scale: 1.06,
-                y: -3,
-                boxShadow:
-                  "0px 15px 40px rgba(224,188,128,0.35)",
-              }}
-              whileTap={{
-                scale: 0.95,
-              }}
-              className="
-                relative
-                overflow-hidden
-                bg-[#e0bc80]
-                text-black
-                px-8 sm:px-10
-                py-4
-                rounded-full
-                font-semibold
-                text-sm sm:text-base
-                shadow-xl
-              "
-            >
-              <span className="relative z-10">
-                Explore More
-              </span>
-
-              <motion.span
-                initial={{
-                  x: "-100%",
-                }}
+            {/* Localized link to contact (Learn/Explore more) */}
+            <Link href={localizePath(`/contact`, locale)}>
+              <motion.a
                 whileHover={{
-                  x: "100%",
+                  scale: 1.06,
+                  y: -3,
+                  boxShadow:
+                    "0px 15px 40px rgba(224,188,128,0.35)",
                 }}
-                transition={{
-                  duration: 0.8,
+                whileTap={{
+                  scale: 0.95,
                 }}
                 className="
-                  absolute
-                  inset-0
-                  bg-white/30
-                  skew-x-12
+                  relative
+                  overflow-hidden
+                  bg-[#e0bc80]
+                  text-black
+                  px-8 sm:px-10
+                  py-4
+                  rounded-full
+                  font-semibold
+                  text-sm sm:text-base
+                  shadow-xl
+                  inline-block text-center
                 "
-              ></motion.span>
-            </motion.button>
+              >
+                <span className="relative z-10">Explore More</span>
+
+                <motion.span
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "100%" }}
+                  transition={{ duration: 0.8 }}
+                  className="absolute inset-0 bg-white/30 skew-x-12"
+                />
+              </motion.a>
+            </Link>
           </motion.div>
         </div>
       </div>

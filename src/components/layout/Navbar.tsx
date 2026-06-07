@@ -82,11 +82,11 @@ export default function Navbar() {
   ];
 
   const languages = [
-    { code: "en", label: "English" },
+    { code: "en", label: "En" },
 
-    { code: "ar", label: "العربية" },
+    { code: "ar", label: "Ar" },
 
-    { code: "tr", label: "Türkçe" },
+    { code: "tr", label: "Tur" },
   ];
 
   const allLinks = [...leftLinks, ...rightLinks];
