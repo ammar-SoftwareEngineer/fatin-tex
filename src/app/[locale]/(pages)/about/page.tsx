@@ -8,9 +8,14 @@ import { localizePath } from "@/lib/utils";
 import { useParams } from "next/navigation";
 
 export default function AboutPage() {
-  const { locale } = useParams();
+const params = useParams();
 
-  const prefix = `/${locale}`;
+const locale =
+  typeof params.locale === "string"
+    ? params.locale
+    : undefined;
+
+const prefix = locale ? `/${locale}` : "";
 
   return (
     <div className="bg-(--background) text-white overflow-hidden">

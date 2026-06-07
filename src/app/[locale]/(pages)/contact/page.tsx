@@ -7,13 +7,32 @@ import {
   HiOutlineEnvelope,
   HiOutlineMapPin,
 } from "react-icons/hi2";
+
 import Breadcrumb from "@/components/Breadcrumb";
 
+import { useParams } from "next/navigation";
+import { localizePath } from "@/lib/utils";
+
 export default function ContactPage() {
+  const params = useParams();
+
+  const locale =
+    typeof params.locale === "string"
+      ? params.locale
+      : undefined;
+
   return (
     <div className="bg-[#0d0b09] text-white overflow-hidden">
 
-      <Breadcrumb items={[{ label: "Contact", href: "/contact" }]} />
+      {/* Breadcrumb */}
+      <Breadcrumb
+        items={[
+          {
+            label: "Contact",
+            href: localizePath("/contact", locale),
+          },
+        ]}
+      />
 
       {/* CONTACT INFO */}
       <section className="px-4 sm:px-6 md:px-16 py-20 sm:py-24">
@@ -41,8 +60,14 @@ export default function ContactPage() {
               key={i}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: i * 0.15 }}
-              whileHover={{ y: -10, scale: 1.02 }}
+              transition={{
+                duration: 0.6,
+                delay: i * 0.15,
+              }}
+              whileHover={{
+                y: -10,
+                scale: 1.02,
+              }}
               viewport={{ once: true }}
               className="
                 relative
@@ -62,13 +87,30 @@ export default function ContactPage() {
 
               {/* icon */}
               <div className="flex justify-center mb-5">
-                <div className="w-14 h-14 rounded-full bg-[#e0bc80]/10 flex items-center justify-center text-[#e0bc80] text-2xl">
+                <div
+                  className="
+                    w-14 h-14
+                    rounded-full
+                    bg-[#e0bc80]/10
+                    flex
+                    items-center
+                    justify-center
+                    text-[#e0bc80]
+                    text-2xl
+                  "
+                >
                   {item.icon}
                 </div>
               </div>
 
-              <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-              <p className="text-gray-400">{item.desc}</p>
+              <h3 className="text-xl font-bold mb-2">
+                {item.title}
+              </h3>
+
+              <p className="text-gray-400">
+                {item.desc}
+              </p>
+
             </motion.div>
           ))}
 
@@ -90,6 +132,7 @@ export default function ContactPage() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">
               Send Us a Message
             </h2>
+
             <p className="text-gray-400 mt-3">
               We usually respond within 24 hours
             </p>
@@ -113,25 +156,51 @@ export default function ContactPage() {
             <input
               type="text"
               placeholder="Your Name"
-              className="p-4 rounded-xl bg-black/30 border border-white/10 outline-none focus:border-[#e0bc80]"
+              className="
+                p-4 rounded-xl
+                bg-black/30
+                border border-white/10
+                outline-none
+                focus:border-[#e0bc80]
+              "
             />
 
             <input
               type="email"
               placeholder="Your Email"
-              className="p-4 rounded-xl bg-black/30 border border-white/10 outline-none focus:border-[#e0bc80]"
+              className="
+                p-4 rounded-xl
+                bg-black/30
+                border border-white/10
+                outline-none
+                focus:border-[#e0bc80]
+              "
             />
 
             <input
               type="text"
               placeholder="Subject"
-              className="md:col-span-2 p-4 rounded-xl bg-black/30 border border-white/10 outline-none focus:border-[#e0bc80]"
+              className="
+                md:col-span-2
+                p-4 rounded-xl
+                bg-black/30
+                border border-white/10
+                outline-none
+                focus:border-[#e0bc80]
+              "
             />
 
             <textarea
               placeholder="Your Message"
               rows={6}
-              className="md:col-span-2 p-4 rounded-xl bg-black/30 border border-white/10 outline-none focus:border-[#e0bc80]"
+              className="
+                md:col-span-2
+                p-4 rounded-xl
+                bg-black/30
+                border border-white/10
+                outline-none
+                focus:border-[#e0bc80]
+              "
             />
 
             <button
@@ -140,7 +209,8 @@ export default function ContactPage() {
                 md:col-span-2
                 bg-[#e0bc80]
                 text-black
-                py-4 rounded-xl
+                py-4
+                rounded-xl
                 font-medium
                 hover:scale-[1.02]
                 transition
@@ -164,6 +234,7 @@ export default function ContactPage() {
         />
 
         <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+
       </section>
 
     </div>
