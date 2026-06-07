@@ -11,5 +11,25 @@ export function localizePath(
 ) {
   if (!locale) return path;
 
-  return `/${locale}${path}`;
+  // Do not localize absolute external URLs, anchors, mailto or tel links
+  if (
+    path.startsWith("http://") ||
+    path.startsWith("https://") ||
+    path.startsWith("mailto:") ||
+    path.startsWith("tel:") ||
+    path === "#" ||
+    path.startsWith("#")
+  ) {
+    return path;
+  }
+
+  // Ensure path starts with a single leading slash
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+
+  // If already localized with the same locale, return as-is
+  if (normalizedPath === `/${locale}` || normalizedPath.startsWith(`/${locale}/`)) {
+    return normalizedPath;
+  }
+
+  return `/${locale}${normalizedPath}`;
 }
