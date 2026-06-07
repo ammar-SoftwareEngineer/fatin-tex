@@ -1,8 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, EffectFade } from "swiper/modules";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import "swiper/css";
+import "swiper/css/effect-fade";
 
 const slides = [
   {
@@ -10,13 +14,11 @@ const slides = [
     title: "Premium Textile Solutions",
     desc: "High-quality fabrics and dyeing services with modern industrial standards.",
   },
-
   {
     image: "/hero2.jpg",
     title: "Modern Fabric Production",
     desc: "Innovative textile manufacturing for local and global markets.",
   },
-
   {
     image: "/hero3.jpg",
     title: "Trusted Industrial Experience",
@@ -25,65 +27,123 @@ const slides = [
 ];
 
 export default function Hero() {
-return (
-  <section>
+  const [activeIndex, setActiveIndex] = useState(0);
 
-    <Swiper
-      modules={[Autoplay]}
-      autoplay={{
-        delay: 4000,
-        disableOnInteraction: false,
-      }}
-      loop={true}
-    >
+  return (
+    <section className="relative w-full h-screen overflow-hidden">
 
-      {slides.map((slide, index) => (
-        <SwiperSlide key={index}>
+      <Swiper
+        modules={[Autoplay, EffectFade]}
+        effect="fade"
+        fadeEffect={{ crossFade: true }}
+        autoplay={{
+          delay: 4500,
+          disableOnInteraction: false,
+        }}
+        loop
+        onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+        className="h-full"
+      >
 
-          <div
-            className="h-screen bg-cover bg-center relative"
-            style={{
-              backgroundImage: `url(${slide.image})`,
-            }}
-          >
+        {slides.map((slide, index) => (
+          <SwiperSlide key={index}>
 
-            {/* Luxury Overlay */}
-            <div className="absolute inset-0 bg-[color:var(--overlay-color)]"></div>
+            {/* SLIDE WRAPPER */}
+            <div className="relative h-screen w-full overflow-hidden">
 
-            {/* Content */}
-           <div className="relative z-10 h-full flex items-center justify-start px-10 md:px-20">
+              {/* BACKGROUND (zoom animation) */}
+              <motion.div
+                animate={
+                  activeIndex === index
+                    ? { scale: 1 }
+                    : { scale: 1.1 }
+                }
+                transition={{ duration: 6, ease: "easeOut" }}
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${slide.image})`,
+                }}
+              />
 
-              <div className="max-w-7xl mx-auto px-5">
+              {/* OVERLAY */}
+              <div className="absolute inset-0 bg-black/60" />
 
-                {/* Title */}
-                <h1 className="text-5xl md:text-7xl font-bold max-w-3xl leading-tight text-[var(--heading-color)]">
-                  {slide.title}
-                </h1>
+              {/* CONTENT */}
+              <div className="relative z-10 h-full flex items-center">
 
-                {/* Description */}
-                <p className="mt-6 text-lg md:text-xl max-w-2xl text-[var(--paragraph-color)] leading-8">
-                  {slide.desc}
-                </p>
+                <div className="max-w-7xl mx-auto px-6 md:px-20 w-full">
 
-                {/* Button */}
-<button className="mt-8 px-8 py-4 rounded-lg text-lg font-medium text-black 
-bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)]
-bg-[length:200%_200%] animate-gradient-x 
-hover:scale-105 transition-transform duration-300">
-  Explore More
-</button>
+                  {/* TITLE */}
+                  <motion.h1
+                    key={`title-${activeIndex}`}
+                    initial={{ opacity: 0, y: 60 }}
+                    animate={
+                      activeIndex === index
+                        ? { opacity: 1, y: 0 }
+                        : { opacity: 0, y: 60 }
+                    }
+                    transition={{ duration: 0.8 }}
+                    className="text-3xl sm:text-5xl md:text-7xl font-bold text-white leading-tight max-w-3xl"
+                  >
+                    {slide.title}
+                  </motion.h1>
 
+                  {/* DESCRIPTION */}
+                  <motion.p
+                    key={`desc-${activeIndex}`}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={
+                      activeIndex === index
+                        ? { opacity: 1, y: 0 }
+                        : { opacity: 0, y: 30 }
+                    }
+                    transition={{ delay: 0.2, duration: 0.7 }}
+                    className="mt-6 text-base sm:text-lg md:text-xl text-gray-300 leading-7 max-w-2xl"
+                  >
+                    {slide.desc}
+                  </motion.p>
+{/* BUTTON */}
+<motion.div
+  animate={
+    activeIndex === index
+      ? { opacity: 1, scale: 1 }
+      : { opacity: 0, scale: 0.9 }
+  }
+  transition={{ delay: 0.4 }}
+  className={activeIndex === index ? "pointer-events-auto" : "pointer-events-none"}
+>
+<Link href="/contact">
+  <motion.div
+    whileHover={{
+      scale: 1.05,
+      boxShadow: "0px 15px 40px rgba(224,188,128,0.3)",
+    }}
+    whileTap={{ scale: 0.95 }}
+    className="
+      mt-8 px-8 py-4
+      rounded-full
+      font-medium
+      text-black
+      bg-gradient-to-r from-[#e0bc80] to-[#f5e6a8]
+      transition-all duration-300
+      inline-block
+      cursor-pointer
+    "
+  >
+    Explore More
+  </motion.div>
+</Link>
+</motion.div>
+
+                </div>
               </div>
 
             </div>
 
-          </div>
+          </SwiperSlide>
+        ))}
 
-        </SwiperSlide>
-      ))}
-
-    </Swiper>
-
-  </section>
-);
+      </Swiper>
+    </section>
+  );
 }

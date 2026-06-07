@@ -3,19 +3,25 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Breadcrumb from "@/components/Breadcrumb";
+import { useParams } from "next/navigation";
 
 export default function AboutPage() {
+  const { locale } = useParams();
+
+  const prefix = `/${locale}`;
+
   return (
     <div className="bg-(--background) text-white overflow-hidden">
 
       {/* Breadcrumb */}
       <Breadcrumb
         items={[
-          { label: "About", href: "/about" },
+          {
+            label: "About",
+            href: `${prefix}/about`,
+          },
         ]}
       />
-
-
 
       {/* STORY SECTION */}
       <section className="px-6 md:px-16 py-20">
@@ -108,7 +114,6 @@ export default function AboutPage() {
       {/* MISSION & VISION */}
       <section className="px-6 md:px-16 py-20 relative overflow-hidden">
 
-        {/* Glow Effects */}
         <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-[#e0bc80] opacity-10 blur-3xl rounded-full"></div>
 
         <div className="absolute bottom-0 right-0 w-[350px] h-[350px] bg-[#b2895d] opacity-10 blur-3xl rounded-full"></div>
@@ -140,13 +145,7 @@ export default function AboutPage() {
               p-6 md:p-8"
             >
 
-              {/* IMAGE */}
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className={`relative overflow-hidden rounded-[30px] h-[350px]
-                ${i % 2 !== 0 ? "lg:order-2" : ""}
-                `}
-              >
+              <div className="relative overflow-hidden rounded-[30px] h-[350px]">
 
                 <img
                   src={item.img}
@@ -154,32 +153,23 @@ export default function AboutPage() {
                   className="w-full h-full object-cover hover:scale-110 transition duration-700"
                 />
 
-                {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-black/60 via-transparent to-black/20"></div>
 
-                {/* Floating Label */}
                 <div className="absolute top-5 left-5 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full">
-
                   <p className="text-[#e0bc80] text-xs tracking-[3px]">
                     FATIN TEX
                   </p>
-
                 </div>
 
-              </motion.div>
+              </div>
 
-              {/* CONTENT */}
-              <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7 }}
-              >
+              <div>
 
                 <p className="text-[#e0bc80] tracking-[6px] text-xs mb-4">
                   LUXURY FABRICS
                 </p>
 
-                <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight font-playfair mb-6">
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">
                   {item.title}
                 </h2>
 
@@ -189,24 +179,11 @@ export default function AboutPage() {
                   {item.desc}
                 </p>
 
-                {/* Button */}
-                <motion.button
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: "0px 0px 25px rgba(224,188,128,0.4)",
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  className="mt-8 border border-[#e0bc80]
-                  text-[#e0bc80]
-                  px-6 py-3 rounded-full
-                  hover:bg-[#e0bc80]
-                  hover:text-black
-                  transition duration-300"
-                >
+                <button className="mt-8 border border-[#e0bc80] text-[#e0bc80] px-6 py-3 rounded-full hover:bg-[#e0bc80] hover:text-black transition">
                   Learn More
-                </motion.button>
+                </button>
 
-              </motion.div>
+              </div>
 
             </motion.div>
           ))}
