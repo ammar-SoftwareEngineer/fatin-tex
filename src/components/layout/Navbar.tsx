@@ -11,6 +11,14 @@ import {
 } from "react-icons/fa";
 
 import { useParams, usePathname } from "next/navigation";
+import { localizePath, switchLocalePath } from "@/lib/utils";
+import { defaultLocale } from "@/i18n/config";
+
+type NavLink = {
+  name: string;
+  href?: string;
+  dropdown?: { name: string; href: string }[];
+};
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -20,15 +28,10 @@ export default function Navbar() {
   const params = useParams();
   const pathname = usePathname();
 
-  // Use locale only when provided in the route. Do not force a default locale here.
-  const locale = typeof params.locale === "string" ? params.locale : undefined;
-  const prefix = locale ? `/${locale}` : "";
+  const locale =
+    typeof params.locale === "string" ? params.locale : defaultLocale;
 
-  // Builds an absolute href that always starts with `/` and includes the locale prefix when present.
-  const makeHref = (path: string) => {
-    const p = path.startsWith("/") ? path : `/${path}`;
-    return prefix ? `${prefix}${p}` : p;
-  };
+  const makeHref = (path: string) => localizePath(path, locale);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,7 +44,7 @@ export default function Navbar() {
       window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const leftLinks = [
+  const leftLinks: NavLink[] = [
     { name: "Home", href: "/" },
 
     { name: "About", href: "/about" },
@@ -52,17 +55,17 @@ export default function Navbar() {
       dropdown: [
         {
           name: "Cotton Fabric",
-          href: "/products/cotton",
+          href: "/products/luxury-cotton-fabric",
         },
 
         {
           name: "Silk Fabric",
-          href: "/products/silk",
+          href: "/products/premium-silk-fabric",
         },
 
         {
           name: "Linen Fabric",
-          href: "/products/linen",
+          href: "/products/soft-linen-fabric",
         },
       ],
     },
@@ -70,7 +73,7 @@ export default function Navbar() {
     { name: "Media", href: "/media" },
   ];
 
-  const rightLinks = [
+  const rightLinks: NavLink[] = [
     {
       name: "Sondos Dyeing",
       href: "/sondos-dyeing",
@@ -91,13 +94,7 @@ export default function Navbar() {
 
   const allLinks = [...leftLinks, ...rightLinks];
 
-  // DESKTOP LINKS
-  const renderDesktopLink = (
-    item: any,
-    i: number
-  ) => {
-
-    // DROPDOWN
+  const renderDesktopLink = (item: NavLink, i: number) => {
     if (item.dropdown) {
       return (
         <li key={i} className="relative group">
@@ -110,11 +107,10 @@ export default function Navbar() {
 
           </div>
 
-          {/* Dropdown */}
           <ul className="absolute top-full left-0 mt-4 w-56 bg-black/90 backdrop-blur-xl rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 p-3">
 
             {item.dropdown.map(
-              (sub: any, idx: number) => (
+              (sub, idx: number) => (
                 <li key={idx}>
 
                     <Link
@@ -133,8 +129,7 @@ export default function Navbar() {
       );
     }
 
-    // NORMAL LINKS - always use absolute hrefs
-    const fullHref = item.href === "/" ? makeHref("/") : makeHref(item.href);
+    const fullHref = makeHref(item.href ?? "/");
 
     const normalizedPathname =
       pathname?.replace(/\/$/, "") ?? "";
@@ -179,7 +174,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* NAVBAR */}
       <nav
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300
         ${
@@ -191,12 +185,10 @@ export default function Navbar() {
 
         <div className="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
 
-          {/* LEFT */}
           <ul className="hidden lg:flex items-center gap-10 text-lg font-medium">
             {leftLinks.map(renderDesktopLink)}
           </ul>
 
-          {/* LOGO */}
           <Link
             href={makeHref("/")}
             className="shrink-0 relative z-10"
@@ -210,14 +202,12 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* RIGHT */}
           <div className="hidden lg:flex items-center gap-10">
 
             <ul className="flex items-center gap-10 text-lg font-medium">
               {rightLinks.map(renderDesktopLink)}
             </ul>
 
-            {/* LANGUAGES */}
             <div className="relative group">
 
               <div className="flex items-center gap-2 text-white cursor-pointer hover:text-[#e0bc80] transition">
@@ -234,7 +224,7 @@ export default function Navbar() {
                   <li key={i}>
 
                     <Link
-                      href={`/${lang.code}`}
+                      href={switchLocalePath(pathname ?? "/", lang.code)}
                       className="block px-4 py-3 rounded-xl text-white hover:bg-[#e0bc80] hover:text-black transition"
                     >
                       {lang.label}
@@ -249,7 +239,6 @@ export default function Navbar() {
 
           </div>
 
-          {/* MOBILE ICON */}
           <button
             onClick={() => setMobileMenu(true)}
             className="lg:hidden text-2xl text-white"
@@ -259,12 +248,10 @@ export default function Navbar() {
 
         </div>
 
-        {/* CENTER BLUR */}
         <div className="absolute left-1/2 -translate-x-1/2 top-0 w-[350px] h-[180px] bg-[#e0bc80]/20 blur-3xl rounded-full pointer-events-none"></div>
 
       </nav>
 
-      {/* MOBILE MENU */}
       <div
         className={`fixed inset-0 z-[999] bg-black/95 backdrop-blur-xl transition-all duration-500 lg:hidden
         ${
@@ -274,7 +261,6 @@ export default function Navbar() {
         }`}
       >
 
-        {/* TOP */}
         <div className="flex justify-between items-center px-6 py-6 border-b border-white/10">
 
           <Image
@@ -293,12 +279,9 @@ export default function Navbar() {
 
         </div>
 
-        {/* LINKS */}
         <div className="px-6 py-8 flex flex-col gap-5">
 
-          {allLinks.map((item: any, i: number) => {
-
-            // DROPDOWN
+          {allLinks.map((item, i) => {
             if (item.dropdown) {
               return (
                 <div
@@ -342,7 +325,7 @@ export default function Navbar() {
                     <div className="flex flex-col gap-3 pl-3">
 
                       {item.dropdown.map(
-                        (sub: any, idx: number) => (
+                        (sub, idx: number) => (
                           <Link
                             key={idx}
                             href={makeHref(sub.href)}
@@ -362,8 +345,7 @@ export default function Navbar() {
               );
             }
 
-            // NORMAL LINKS - always produce absolute href
-            const fullHref = item.href === "/" ? makeHref("/") : makeHref(item.href);
+            const fullHref = makeHref(item.href ?? "/");
 
             return (
               <Link
@@ -377,7 +359,6 @@ export default function Navbar() {
             );
           })}
 
-          {/* LANGUAGES */}
           <div className="pt-6">
 
             <p className="text-[#e0bc80] text-sm mb-4">
@@ -389,7 +370,7 @@ export default function Navbar() {
               {languages.map((lang, i) => (
                 <Link
                   key={i}
-                  href={`/${lang.code}`}
+                  href={switchLocalePath(pathname ?? "/", lang.code)}
                   onClick={() => setMobileMenu(false)}
                   className="px-4 py-2 rounded-full border border-white/20 text-white hover:bg-[#e0bc80] hover:text-black transition"
                 >

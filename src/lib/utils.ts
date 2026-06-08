@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { defaultLocale, isLocale } from "@/i18n/config"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -9,7 +10,7 @@ export function localizePath(
   path: string,
   locale?: string
 ) {
-  if (!locale) return path;
+  const activeLocale = locale ?? defaultLocale;
 
   // Do not localize absolute external URLs, anchors, mailto or tel links
   if (
@@ -27,9 +28,23 @@ export function localizePath(
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
 
   // If already localized with the same locale, return as-is
-  if (normalizedPath === `/${locale}` || normalizedPath.startsWith(`/${locale}/`)) {
+  if (
+    normalizedPath === `/${activeLocale}` ||
+    normalizedPath.startsWith(`/${activeLocale}/`)
+  ) {
     return normalizedPath;
   }
 
-  return `/${locale}${normalizedPath}`;
+  return `/${activeLocale}${normalizedPath}`;
+}
+
+export function switchLocalePath(pathname: string, newLocale: string) {
+  const segments = pathname.split("/").filter(Boolean);
+
+  if (segments.length > 0 && isLocale(segments[0])) {
+    segments[0] = newLocale;
+    return `/${segments.join("/")}`;
+  }
+
+  return localizePath(pathname === "/" ? "/" : pathname, newLocale);
 }

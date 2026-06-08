@@ -1,8 +1,11 @@
 "use client";
 
 import React from "react";
- import { useParams } from "next/navigation";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
+import { localizePath } from "@/lib/utils";
+import { defaultLocale } from "@/i18n/config";
 
 import {
   FaFacebookF,
@@ -39,12 +42,9 @@ const socialIcons = [
     href: "https://www.linkedin.com/",
   },
 ];
-const { locale } = useParams();
-
-const makeLink = (path: string) => {
-  if (!locale) return path;
-  return `/${locale}${path}`;
-};
+const params = useParams();
+const locale =
+  typeof params.locale === "string" ? params.locale : defaultLocale;
   return (
     <footer className="relative overflow-hidden text-white">
       {/* BACKGROUND */}
@@ -261,9 +261,8 @@ const makeLink = (path: string) => {
             "
           >
 {footerLinks.map((item, i) => (
-  <motion.a
+  <motion.div
     key={i}
-    href={makeLink(item.href)}
     whileHover={{
       scale: 1.08,
       y: -4,
@@ -271,16 +270,19 @@ const makeLink = (path: string) => {
       color: "#000",
     }}
     className="
-      px-5 py-2.5
       rounded-full
       border border-white/10
       bg-white/5
-      text-gray-300
       transition-all
     "
   >
-    {item.name}
-  </motion.a>
+    <Link
+      href={localizePath(item.href, locale)}
+      className="block px-5 py-2.5 text-gray-300"
+    >
+      {item.name}
+    </Link>
+  </motion.div>
 ))}
           </motion.div>
 

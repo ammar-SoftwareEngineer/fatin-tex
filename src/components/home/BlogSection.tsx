@@ -14,31 +14,25 @@ export default function BlogSection() {
   const blogs = [
     {
       title: "The Future of Textile Innovation",
-
+      slug: "future-of-textile-innovation",
       desc: "Discover how modern dyeing techniques are changing the fabric industry.",
-
       img: "/blog1.avif",
-
       date: "Jan 2026",
     },
 
     {
       title: "Luxury Fabrics Trends 2026",
-
+      slug: "luxury-fabrics-trends-2026",
       desc: "A deep dive into premium textures and fashion-forward materials.",
-
       img: "/blog2.jpg",
-
       date: "Feb 2026",
     },
 
     {
       title: "Behind Sundus Dyeing Process",
-
+      slug: "behind-sundus-dyeing-process",
       desc: "From raw fabric to final masterpiece — explore our process.",
-
       img: "/blog3.jpg",
-
       date: "Mar 2026",
     },
   ];
@@ -266,7 +260,7 @@ export default function BlogSection() {
 
               {/* BUTTON */}
               <Link
-                href={localizePath(`/blogs/${blog.title.toLowerCase().replace(/\s+/g, "-")}`, locale)}
+                href={localizePath(`/blogs/${blog.slug}`, locale)}
                 className="
                   inline-flex
                   items-center

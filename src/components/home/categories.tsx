@@ -11,6 +11,13 @@ import { localizePath } from "@/lib/utils";
 
 import "swiper/css";
 
+const categoryProductSlug: Record<string, string> = {
+  Cotton: "luxury-cotton-fabric",
+  Silk: "premium-silk-fabric",
+  Linen: "soft-linen-fabric",
+  Wool: "modern-wool-fabric",
+};
+
 export default function Categories() {
   const tabs = [
     {
@@ -125,7 +132,10 @@ export default function Categories() {
               {tabs[activeTab].items.map((item, i) => (
                 <SwiperSlide key={i}>
                   <Link
-                      href={localizePath(`/products/${item.name.toLowerCase().replace(/\s/g, "-")}`, locale)}
+                      href={localizePath(
+                        `/products/${categoryProductSlug[tabs[activeTab].name]}`,
+                        locale
+                      )}
                       className="block"
                     >
                     {/* 💎 LUXURY CARD */}
